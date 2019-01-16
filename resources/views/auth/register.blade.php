@@ -61,6 +61,13 @@
                             </div>
                         </div>
 
+                        <div class="form-group row">
+                            <div class="col-md-6 offset-md-4">
+                                <input name="is_admin" type="checkbox" aria-label="Checkbox for following text input">
+                                <label for="is_admin" class="col-form-label text-md-right">Register as admin</label>
+                            </div>
+                        </div>
+
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">

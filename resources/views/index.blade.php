@@ -5,36 +5,30 @@
   <thead>
     <tr>
       <th>Tasks</th>
+      @isAdmin
       <th>Assigned to</th>
+      @endisAdmin
       <th>Edit</th>
       <th>Delete</th>
     </tr>
   </thead>
   <tbody>
+    @foreach($tasks as $task)
     <tr>
-      <td><a href="">Slim down 10 kg</a></td>
-      <td>John Doe</td>
-      <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
-      <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
+      <td><a href="">
+      @if(!$task->status)
+        {{ $task->content }}
+      @else
+        <strike class="grey-text">{{ $task->content }}</strike>
+      </a></td>
+      @endif
+      @isAdmin
+      <td>{{$task->user->name}}</td>
+      @endisAdmin
+      <td><a href="{{route('edit', $task->id)}}" title="edit"><i class="small material-icons">edit</i></a></td>
+      <td><a href="{{route('delete', $task->id)}}" title="delete" onclick="return confirm('Delete task?')"<i class="small material-icons">delete</i></a></td>
     </tr>
-    <tr>
-      <td><a href="">Jog 3x a week</a></td>
-      <td>Jane Doe</td>
-      <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
-      <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
-    </tr>
-    <tr>
-      <td><a href="">Repair bike</a></td>
-      <td>Alice Boberson</td>
-      <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
-      <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
-    </tr>
-    <tr>
-      <td><a href="">Learn how to cook</a></td>
-      <td>Bob Alisson</td>
-      <td><a href="" title="edit"><i class="small material-icons">edit</i></a></td>
-      <td><a href="" title="delete"><i class="small material-icons">delete</i></a></td>
-    </tr>
+    @endforeach
   </tbody>
 </table>
 
@@ -48,28 +42,38 @@
     <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
   </ul>
   <br>
-  <form class="col s12">
+
+  <form method="POST" action="{{ route('store') }}" class="col s12">
     <div class="row">
       <div class="input-field">
-        <input placeholder="New Task" id="task" type="text" class="validate">
+        <input placeholder="New Task" name="task" id="task" type="text" class="validate">
         <label for="task"></label>
 
-        <div class="input-field">
-          <select>
-            <option value="" disabled selected>Assign to:</option>
-            <option value="1">Myself</option>
-            <option value="2">John Doe</option>
-            <option value="3">Jane Doe</option>
-            <option value="4">Alice Boberson</option>
-            <option value="5">Bob Alisson</option>
-          </select>
-        </div>
+        @include('partials.coworkers')
 
-        <a class="waves-effect waves-light btn">Add new task</a>
-
+        <button type="submit" class="waves-effect waves-light btn">Add new task</button>
+        @csrf
       </div>
   </form>
 
+  @isWorker
+  <form action="" method="" class="col s12">
+    <div class="input-field">
+      <select>
+        <option value="" disabled selected>Send invitation to:</option>
+        <option value="1">Myself</option>
+        <option value="2">John Doe</option>
+        <option value="3">Jane Doe</option>
+        <option value="4">Alice Boberson</option>
+        <option value="5">Bob Alisson</option>
+      </select>
+    </div>
+    <a class="waves-effect waves-light btn">Send</a>
+  </form>
+  @endisWorker
+
+
+  @isAdmin
   <ul class="collection with-header">
     <li class="collection-header">
       <h4>My Coworkers</h4>
@@ -87,6 +91,7 @@
       <div>Bob Alisson<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div>
     </li>
   </ul>
+@endisAdmin
 
 @endsection
 

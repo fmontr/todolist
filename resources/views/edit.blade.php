@@ -1,13 +1,17 @@
 @extends('layouts.master')
 @section('content')
 
-<form class="col s12">
+<form method="POST" action="{{ route('update', ['id'=>$task->id]) }}" class="col s12">
   <div class="row">
     <div class="input-field">
-      <input value="Task content" id="task2" type="text" class="validate">
+      <input name="task" value="{{ $task->content }}" id="task2" type="text" class="validate">
       <label for="task">Edit Task</label>
     </div>
-      <a class="waves-effect waves-light btn">Edit task</a>
+
+      @include('partials.coworkers')
+
+      <button type="submit" class="waves-effect waves-light btn">Edit task</button>
+      @csrf
   </div>
 </form>
 

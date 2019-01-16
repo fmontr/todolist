@@ -14,8 +14,13 @@
 <body>
 
   <div class="container">
-    <p>Logged as fmontr</p><a class="waves-effect waves-light btn">Logout</a>
 
+    <form action="{{ route('logout') }}" method="POST"">
+        @csrf
+      <p>Logged as <strong>{{Auth::user()->name}}</strong></p><button type="submit" class="waves-effect waves-light btn">Logout</button>
+    </form>
+
+      @isAdmin
       <ul class="collapsible">
         <li>
           <div class="collapsible-header"><i class="material-icons">person_add</i>First</div>
@@ -32,6 +37,7 @@
           </div>
         </li>
       </ul>
+      @endisAdmin
 
       <h1 class="center-align green-text text-darken-2">To-do List</h1>
 
