@@ -15,7 +15,7 @@
   <tbody>
     @foreach($tasks as $task)
     <tr>
-      <td><a href="">
+      <td><a href="{{ route('updateStatus', $task->id) }}">
       @if(!$task->status)
         {{ $task->content }}
       @else
@@ -32,7 +32,8 @@
   </tbody>
 </table>
 
-  <ul class="pagination">
+{{ $tasks->links('vendor.pagination.materialize') }}
+  {{--<ul class="pagination">
     <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
     <li class="active"><a href="#!">1</a></li>
     <li class="waves-effect"><a href="#!">2</a></li>
@@ -40,7 +41,7 @@
     <li class="waves-effect"><a href="#!">4</a></li>
     <li class="waves-effect"><a href="#!">5</a></li>
     <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-  </ul>
+  </ul>--}}
   <br>
 
   <form method="POST" action="{{ route('store') }}" class="col s12">
@@ -57,18 +58,19 @@
   </form>
 
   @isWorker
-  <form action="" method="" class="col s12">
+  <form action="{{ route('sendInvitation') }}" method="POST" class="col s12">
     <div class="input-field">
-      <select>
-        <option value="" disabled selected>Send invitation to:</option>
-        <option value="1">Myself</option>
-        <option value="2">John Doe</option>
-        <option value="3">Jane Doe</option>
-        <option value="4">Alice Boberson</option>
-        <option value="5">Bob Alisson</option>
+      <select name="admin">
+        <option disabled selected>Send invitation to:</option>
+
+        @foreach ($coworkers as $coworker)
+            <option value="{{ $coworker->id }}">{{ $coworker->name }}</option>
+        @endforeach
+
       </select>
     </div>
-    <a class="waves-effect waves-light btn">Send</a>
+    <button type="submit" class="waves-effect waves-light btn">Send</button>
+    @csrf
   </form>
   @endisWorker
 
