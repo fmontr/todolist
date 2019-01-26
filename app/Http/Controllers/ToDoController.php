@@ -12,11 +12,20 @@ use App\Invitation;
 class ToDoController extends Controller
 {
     public function index() {
-        //use where method on Task MODEL to retrieve all tasks from current user,
-        //so they are available on the view
-        $tasks = Task::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(4);
-        $coworkers = User::where('is_admin', 1)->get();
-        return view('index', compact('tasks', 'coworkers'));
+
+        if(Auth::user()->is_admin) {
+            $coworkers = Invitation::where('admin_id', Auth::user()->id)->where('accepted', 1)->get();
+            $invitations = Invitation::where('admin_id', Auth::user()->id)->where('accepted', 0)->get();
+            $tasks = Task::where('user_id', Auth::user()->id)->orWhere('admin_id', Auth::user()->admin_id)->orderBy('created_at', 'DESC')->paginate(4);
+        } else {
+            //use where method on Task MODEL to retrieve all tasks from current user,
+            //so they are available on the view
+            $invitations = [];
+            $tasks = Task::where('user_id', Auth::user()->id)->orderBy('created_at', 'DESC')->paginate(4);
+            $coworkers = User::where('is_admin', 1)->get();
+            return view('index', compact('tasks', 'coworkers', 'invitations'));
+        }
+
     }
 
     //Request $request get info from form inputs
@@ -72,5 +81,21 @@ class ToDoController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function acceptInvitation(Request $request) {
+        $invitation = Invitation::findO($id);
+        $invitation->accepted = true;
+        $invitation->save();
+
+        return redirect()->back();
+    }
+
+    public function denyInvitation(Request $request) {
+        $invitation = Invitation::findO($id);
+        $invitation->delete();
+
+        return redirect()->back();
+
     }
 }
