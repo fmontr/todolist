@@ -21,6 +21,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sendInvitation', 'ToDoController@sendInvitation')->name('sendInvitation');
     Route::post('/acceptInvitation', 'ToDoController@acceptInvitation')->name('acceptInvitation');
     Route::post('/denyInvitation', 'ToDoController@denyInvitation')->name('denyInvitation');
+    Route::post('/deleteWorker/{id}', 'ToDoController@deleteWorker')->name('deleteWorker');
 });
 
 

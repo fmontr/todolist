@@ -33,15 +33,7 @@
 </table>
 
 {{ $tasks->links('vendor.pagination.materialize') }}
-  {{--<ul class="pagination">
-    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-    <li class="active"><a href="#!">1</a></li>
-    <li class="waves-effect"><a href="#!">2</a></li>
-    <li class="waves-effect"><a href="#!">3</a></li>
-    <li class="waves-effect"><a href="#!">4</a></li>
-    <li class="waves-effect"><a href="#!">5</a></li>
-    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-  </ul>--}}
+
   <br>
 
   <form method="POST" action="{{ route('store') }}" class="col s12">
@@ -76,24 +68,18 @@
 
 
   @isAdmin
-  <ul class="collection with-header">
-    <li class="collection-header">
-      <h4>My Coworkers</h4>
-    </li>
-    <li class="collection-item">
-      <div>John Doe<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div>
-    </li>
-    <li class="collection-item">
-      <div>Jane Doe<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div>
-    </li>
-    <li class="collection-item">
-      <div>Alice Boberson<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div>
-    </li>
-    <li class="collection-item">
-      <div>Bob Alisson<a href="#!" class="secondary-content"><i class="material-icons">delete</i></a></div>
-    </li>
-  </ul>
-@endisAdmin
+    <ul class="collection with-header">
+      <li class="collection-header">
+        <h4>My Coworkers</h4>
+      </li>
+      @foreach ($coworkers as $coworker)
+        <li class="collection-item">
+          <div>{{ $coworker->worker->name }}<a href="{{ route('deleteWorker', $coworker->id) }}" class="secondary-content"><i class="material-icons">delete</i></a></div>
+        </li>
+
+      @endforeach
+    </ul>
+  @endisAdmin
 
 @endsection
 

@@ -1,13 +1,16 @@
 @isAdmin
 
 <div class="input-field">
-  <select>
+  <select name="assignTo">
     <option value="" disabled selected>Assign to:</option>
-    <option value="1">Myself</option>
-    <option value="2">John Doe</option>
-    <option value="3">Jane Doe</option>
-    <option value="4">Alice Boberson</option>
-    <option value="5">Bob Alisson</option>
+    <option value="{{ Auth::user()->id }}">Myself</option>
+      @foreach($coworkers as $coworker)
+        @if(isset($task) && $coworker->worker->id == $task->user->id)
+          <option selected value="{{ $coworker->worker->id }}">{{ $coworker->worker->name }}</option>
+        @else
+          <option value="{{ $coworker->worker->id }}">{{ $coworker->worker->name }}</option>
+        @endif
+      @endforeach
   </select>
 </div>
 
